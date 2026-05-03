@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.username }} - Subscription</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        ::-webkit-scrollbar { display: none; }
+        
+        /* CSS Variables for Themes */
+        :root {
+            --primary: #6366f1;
+            --gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --gradient2: linear-gradient(135deg, #2d7038, #4fac57);
+            
+            /* Dark Theme (Default) */
+            --bg-main: linear-gradient(45deg, #0f172a, #1e293b);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --box-bg: rgba(255, 255, 255, 0.05);
+            --box-hover: rgba(255, 255, 255, 0.1);
+            
+            --lang-bg: rgba(255, 255, 255, 0.05);
+            --lang-text: #cbd5e1;
+            --lang-border: rgba(255, 255, 255, 0.1);
+            --lang-active: #3b82f6;
+            
+            --qr-bg: rgba(255, 255, 255, 0.05);
+            --guide-bg: rgba(0, 0, 0, 0.2);
+            --modal-bg: rgba(15, 23, 42, 0.95);
+            --modal-content: rgba(30, 41, 59, 0.95);
+        }
+
+        [data-theme="light"] {
+            --bg-main: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --box-bg: rgba(255, 255, 255, 0.5);
+            --box-hover: rgba(255, 255, 255, 0.8);
+            
+            --lang-bg: rgba(255, 255, 255, 0.6);
+            --lang-text: #475569;
+            --lang-border: rgba(0, 0, 0, 0.1);
+            --lang-active: #3b82f6;
+            
+            --qr-bg: rgba(0, 0, 0, 0.03);
+            --guide-bg: rgba(255, 255, 255, 0.5);
+            --modal-bg: rgba(255, 255, 255, 0.8);
+            --modal-content: rgba(248, 250, 252, 0.95);
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: color 0.3s;
+        }
+        
+        .background { position: fixed; width: 100vw; height: 100vh; z-index: -1; }
+        .circle { position: absolute; border-radius: 50%; filter: blur(70px); }
+        .circle-1 { width: 500px; height: 500px; background: #6366f140; top: -100px; left: -100px; }
+        .circle-2 { width: 400px; height: 400px; background: #8b5cf640; bottom: -50px; right: -50px; }
+        
+        .container { max-width: 800px; margin: 2rem auto; padding: 1.5rem; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        
+        .header-actions { display: flex; gap: 1rem; align-items: center; }
+
+        .lang-toggle {
+            display: inline-flex;
+            background: var(--lang-bg);
+            border-radius: 8px;
+            border: 1px solid var(--lang-border);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .lang-btn {
+            background: transparent;
+            color: var(--lang-text);
+            border: none;
+            padding: 0.4rem 1rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .lang-btn.active { background: var(--lang-active); color: #fff; }
+        .lang-btn:not(:last-child) { border-right: 1px solid var(--lang-border); }
+
+        .theme-toggle {
+            background: var(--lang-bg);
+            border: 1px solid var(--lang-border);
+            color: var(--lang-text);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s; backdrop-filter: blur(10px);
+        }
+        .theme-toggle:hover { transform: scale(1.05); background: var(--box-hover); color: var(--text-main); }
+
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 1.5rem; margin-bottom: 1.5rem; animation: fadeUp 0.5s ease-out;
+            transition: all 0.3s;
+        }
+        
+        .direct-qr-container { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+        
+        #sub-qrcode, #node-qrcode {
+            background: var(--qr-bg); 
+            padding: 1.5rem; 
+            border-radius: 20px;
+            border: 1px solid var(--glass-border); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: background 0.3s, border-color 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .info-box { background: var(--box-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.25rem 1rem; text-align: center; transition: all 0.3s; }
+        .info-box i { font-size: 1.5rem; margin-bottom: 0.5rem; color: #a5b4fc; }
+        .info-box h4 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 400; transition: color 0.3s; }
+        .info-box span { font-size: 1.1rem; font-weight: 600; color: var(--text-main); transition: color 0.3s; }
+
+        .main-actions { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 0.5rem; }
+        .btn { background: var(--gradient); border: none; color: white; padding: 1rem; border-radius: 16px; cursor: pointer; font-size: 1rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-green { background: var(--gradient2); }
+
+        .guide-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .os-card { background: var(--box-bg); border-radius: 16px; padding: 1.25rem; transition: background 0.3s; }
+        .os-title { display: flex; align-items: center; gap: 0.75rem; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+        .os-title i { font-size: 1.25rem; }
+        .app-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .app-btn { background: var(--box-bg); border: 1px solid var(--glass-border); color: var(--text-main); padding: 0.75rem; border-radius: 12px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; transition: all 0.2s; }
+        .app-btn:hover { background: var(--box-hover); }
+        .app-btn.import { background: var(--gradient); color: white; border: none; font-weight: 500; justify-content: center; gap: 0.5rem; }
+        .app-note { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.25rem; transition: color 0.3s; }
+
+        .usage-guide { margin-top: 1.5rem; padding: 1.25rem; background: var(--guide-bg); border-radius: 16px; border: 1px solid var(--glass-border); transition: all 0.3s; }
+        .usage-guide h4 { margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: var(--text-main); }
+        .usage-guide ol { padding-left: 1.5rem; color: var(--text-muted); font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem; transition: color 0.3s; }
+        .usage-guide li::marker { color: #8b5cf6; font-weight: bold; }
+
+        .proxy-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+        .proxy-item { display: flex; justify-content: space-between; align-items: center; background: var(--box-bg); padding: 0.75rem 1rem; border-radius: 12px; transition: all 0.2s; border: 1px solid transparent; }
+        .proxy-item:hover { background: var(--box-hover); border-color: var(--glass-border); }
+        .node-name { font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 75%; cursor: pointer; flex-grow: 1; }
+        .node-actions { display: flex; gap: 1rem; color: var(--text-muted); align-items: center; transition: color 0.3s; }
+        .node-actions i { cursor: pointer; transition: 0.2s; font-size: 1.1rem; }
+        .node-actions i:hover { color: var(--text-main); }
+
+        .modal { display: none; position: fixed; inset: 0; background: var(--modal-bg); z-index: 9999; backdrop-filter: blur(12px); align-items: center; justify-content: center; transition: background 0.3s; }
+        .modal.show { display: flex; animation: modalFadeIn 0.3s ease-out; }
+        .modal-content { background: var(--modal-content); padding: 2.5rem 2rem; border-radius: 24px; border: 1px solid var(--glass-border); text-align: center; max-width: 90%; position: relative; transition: all 0.3s; }
+        .close-modal { position: absolute; top: 15px; right: 15px; background: var(--glass-border); color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .close-modal:hover { background: rgba(239, 68, 68, 0.8); color: white; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
+        .hidden-title { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .hidden-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
+        .hidden-content.open { max-height: 3000px; }
+        .caret { transition: transform 0.3s; }
+        .caret.open { transform: rotate(180deg); }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="circle circle-1"></div><div class="circle circle-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header & Controls -->
+        <div class="header-top">
+            <h2 style="font-weight: 600; font-size: 1.4rem;">{{ user.username }}</h2>
+            
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="lang-toggle">
+                    <button class="lang-btn" data-lang="zh">中文</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="ja">JP</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Card -->
+        <div class="glass-card">
+            
+            <div class="direct-qr-container">
+                <div id="sub-qrcode"></div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-box">
+                    <i class="fas fa-signal"></i>
+                    <h4 data-i18n="status">Status</h4>
+                    <span data-i18n="{{ user.status.value }}">{{ user.status.value | capitalize }}</span>
+                </div>
+                <div class="info-box">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h4 data-i18n="duration">Duration</h4>
+                    <span id="duration-val">{% if user.expire %}{{ (user.expire | datetime).split()[0] }}{% else %}∞{% endif %}</span>
+                </div>
+                <div class="info-box">
+                    <i class="fas fa-chart-pie"></i>
+                    <h4 data-i18n="traffic">Traffic</h4>
+                    <span>{{ user.used_traffic | bytesformat }} / {% if user.data_limit %}{{ user.data_limit | bytesformat }}{% else %}∞{% endif %}</span>
+                </div>
+                <div class="info-box">
+                    <i class="fas fa-sync-alt"></i>
+                    <h4 data-i18n="reset">Traffic Reset</h4>
+                    {% set reset_val = user.data_limit_reset_strategy.value if user.data_limit_reset_strategy.value else user.data_limit_reset_strategy %}
+                    <span data-i18n="reset_{{ reset_val }}">{{ reset_val }}</span>
+                </div>
+            </div>
+
+            <div class="main-actions">
+                <button class="btn" onclick="copyText('{{ user.subscription_url }}', this)">
+                    <i class="fas fa-copy"></i> <span data-i18n="copy_sub">Copy Subscription</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Guide Card -->
+        <div class="glass-card">
+            <div class="hidden-title" onclick="toggleSection('guide-content', 'guide-caret')">
+                <h3><i class="fas fa-book-open" style="margin-right: 0.5rem;"></i><span data-i18n="guide">Setup Guide</span></h3>
+                <i class="fas fa-chevron-down caret" id="guide-caret"></i>
+            </div>
+            
+            <div class="hidden-content open" id="guide-content">
+                <div class="guide-section">
+                    <div class="os-card">
+                        <div class="os-title"><i class="fab fa-windows text-blue-400"></i> Windows</div>
+                        <div class="app-list">
+                            <a href="https://github.com/2dust/v2rayN/releases" class="app-btn" target="_blank">
+                                <span>v2rayN</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <a href="https://github.com/clash-verge-rev/clash-verge-rev/releases" class="app-btn" target="_blank">
+                                <span>Clash Verge</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <button class="app-btn import" onclick="importClash()">
+                                <i class="fas fa-bolt"></i> <span data-i18n="import_clash">Import to Clash</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="os-card">
+                        <div class="os-title"><i class="fab fa-apple"></i> macOS</div>
+                        <div class="app-list">
+                            <a href="https://github.com/yichengchen/clashX/releases" class="app-btn" target="_blank">
+                                <span>ClashX</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <a href="https://github.com/clash-verge-rev/clash-verge-rev/releases" class="app-btn" target="_blank">
+                                <span>Clash Verge</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <button class="app-btn import" onclick="importClash()">
+                                <i class="fas fa-bolt"></i> <span data-i18n="import_clash">Import to Clash</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="os-card">
+                        <div class="os-title"><i class="fab fa-android text-green-500"></i> Android</div>
+                        <div class="app-list">
+                            <a href="https://github.com/2dust/v2rayNG/releases" class="app-btn" target="_blank">
+                                <span>v2rayNG</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <a href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases" class="app-btn" target="_blank">
+                                <span>Clash Meta</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <a href="v2rayng://install-config?url={{ user.subscription_url }}#{{ user.username }}" class="app-btn import">
+                                <i class="fas fa-bolt"></i> <span data-i18n="import_v2rayng">Import to v2rayNG</span>
+                            </a>
+                            <button class="app-btn import" onclick="importClash()">
+                                <i class="fas fa-bolt"></i> <span data-i18n="import_clash">Import to Clash</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="os-card">
+                        <div class="os-title"><i class="fab fa-app-store-ios"></i> iOS</div>
+                        <div class="app-list">
+                            <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" class="app-btn" target="_blank">
+                                <span><i class="fas fa-search" style="font-size: 0.8em; margin-right: 4px;"></i> Shadowrocket</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <a href="https://apps.apple.com/us/app/quantumult-x/id1443988620" class="app-btn" target="_blank">
+                                <span><i class="fas fa-search" style="font-size: 0.8em; margin-right: 4px;"></i> Quantumult X</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            </a>
+                            <div class="app-note" data-i18n="non_cn_store">(非国区 App Store 下载)</div>
+                            <button class="app-btn import" onclick="importShadowrocket()" style="margin-top: 0.5rem;">
+                                <i class="fas fa-bolt"></i> <span data-i18n="import_shadowrocket">Import to Shadowrocket</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usage-guide">
+                    <h4><i class="fas fa-info-circle"></i> <span data-i18n="usage_title">Basic Usage Guide</span></h4>
+                    <ol>
+                        <li data-i18n="step_1">Download and install the recommended client for your operating system.</li>
+                        <li data-i18n="step_2">Click the "Import" button above, or copy your subscription link and add it manually in the client.</li>
+                        <li data-i18n="step_3">Update the subscription within the client to fetch the latest nodes.</li>
+                        <li data-i18n="step_4">Select a node from the list and turn on the main proxy switch to connect.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nodes Card -->
+        <div class="glass-card">
+            <div class="hidden-title" onclick="toggleSection('nodes-content', 'nodes-caret')">
+                <h3><i class="fas fa-server" style="margin-right: 0.5rem;"></i><span data-i18n="nodes">Nodes List</span></h3>
+                <i class="fas fa-chevron-down caret" id="nodes-caret"></i>
+            </div>
+            
+            <div class="hidden-content" id="nodes-content">
+                <button class="btn btn-green" style="width: 100%; margin-top: 1rem;" onclick="copyAllNodes(this)">
+                    <i class="fas fa-copy"></i> <span data-i18n="copy_all">Copy All Nodes</span>
+                </button>
+                <div class="proxy-list" id="proxy-list-container">
+                    {% for link in user.links %}
+                    <div class="proxy-item">
+                        <span class="node-name" data-url="{{ link }}" onclick="copyText('{{ link }}', this, true)">Loading...</span>
+                        <div class="node-actions">
+                            <i class="fas fa-qrcode" onclick="showNodeQR('{{ link }}')" title="QR Code"></i>
+                            <i class="fas fa-clone" onclick="copyText('{{ link }}', this.parentElement.previousElementSibling, true)" title="Copy"></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Node QR Modal -->
+    <div id="qrModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="close-modal" onclick="closeModal(true)"><i class="fas fa-times"></i></div>
+            <h3 style="margin-bottom: 1.5rem;" data-i18n="qr_node">Node QR Code</h3>
+            <div id="node-qrcode"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentTheme = localStorage.getItem('sub_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('sub_theme', currentTheme);
+            updateThemeIcon();
+            generateSubQR();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.querySelector('#themeBtn i');
+            icon.className = currentTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        updateThemeIcon();
+
+        const dict = {
+            en: {
+                status: "Status", duration: "Duration", traffic: "Traffic", reset: "Traffic Reset",
+                active: "Active", limited: "Limited", expired: "Expired", disabled: "Disabled",
+                reset_no_reset: "No Reset", reset_day: "Daily", reset_week: "Weekly", reset_month: "Monthly", reset_year: "Yearly",
+                copy_sub: "Copy Subscription", qr_node: "Node QR Code", guide: "Setup Guide",
+                import_clash: "Import to Clash", import_v2rayng: "Import to v2rayNG", import_shadowrocket: "Import to Shadowrocket",
+                nodes: "Nodes List", copy_all: "Copy All Nodes", copied: "Copied!", forever: "Forever", non_cn_store: "(Non-China App Store)",
+                usage_title: "Basic Usage Guide",
+                step_1: "1. Download and install the recommended client for your OS.",
+                step_2: "2. Click the Import button, or copy the subscription link to add it manually.",
+                step_3: "3. Update the subscription in the client to fetch the latest nodes.",
+                step_4: "4. Select a node and turn on the proxy switch to start using."
+            },
+            zh: {
+                status: "状态", duration: "有效期", traffic: "流量使用", reset: "流量重置",
+                active: "正常", limited: "流量耗尽", expired: "已过期", disabled: "已禁用",
+                reset_no_reset: "不重置", reset_day: "每日重置", reset_week: "每周重置", reset_month: "每月重置", reset_year: "每年重置",
+                copy_sub: "复制订阅链接", qr_node: "节点二维码", guide: "客户端指南",
+                import_clash: "一键导入 Clash", import_v2rayng: "一键导入 v2rayNG", import_shadowrocket: "一键导入 Shadowrocket",
+                nodes: "节点列表", copy_all: "一键复制所有节点", copied: "已复制！", forever: "永久有效", non_cn_store: "(非国区 App Store 下载)",
+                usage_title: "基本使用指南",
+                step_1: "1. 根据您的操作系统，下载并安装上方推荐的客户端软件。",
+                step_2: "2. 点击对应软件的“一键导入”按钮，或复制订阅链接并在软件中手动添加。",
+                step_3: "3. 在客户端中点击“更新订阅”，以获取最新的节点列表。",
+                step_4: "4. 选择一个延迟较低的节点，开启主开关即可开始使用。"
+            },
+            ja: {
+                status: "ステータス", duration: "有効期限", traffic: "通信量", reset: "リセット",
+                active: "有効", limited: "制限中", expired: "期限切れ", disabled: "無効",
+                reset_no_reset: "リセットなし", reset_day: "毎日", reset_week: "毎週", reset_month: "毎月", reset_year: "毎年",
+                copy_sub: "サブスクをコピー", qr_node: "ノードQRコード", guide: "セットアップガイド",
+                import_clash: "Clashにインポート", import_v2rayng: "v2rayNGにインポート", import_shadowrocket: "Shadowrocketにインポート",
+                nodes: "ノード一覧", copy_all: "全ノードをコピー", copied: "コピーしました！", forever: "無期限", non_cn_store: "(日本など海外のApp Store)",
+                usage_title: "基本の使いかた",
+                step_1: "1. OSに合わせて、上記の推奨アプリをダウンロード・インストールします。",
+                step_2: "2. 「インポート」ボタンを押すか、サブスクリンクをコピーして手動で追加します。",
+                step_3: "3. アプリ内でサブスクを更新し、最新のノードリストを取得します。",
+                step_4: "4. ノードを選択し、プロキシのスイッチをオンにして接続します。"
+            }
+        };
+
+        let currentLang = localStorage.getItem('sub_lang') || (navigator.language.includes('zh') ? 'zh' : (navigator.language.includes('ja') ? 'ja' : 'en'));
+
+        function setLangBtnActive(lang) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+            if (btn) btn.classList.add('active');
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentLang = e.target.getAttribute('data-lang');
+                localStorage.setItem('sub_lang', currentLang);
+                setLangBtnActive(currentLang);
+                applyLang();
+            });
+        });
+
+        function applyLang() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[currentLang] && dict[currentLang][key]) { el.innerHTML = dict[currentLang][key]; }
+            });
+            const durationEl = document.getElementById('duration-val');
+            if(durationEl.innerText.includes('∞') || durationEl.innerText === 'Forever' || durationEl.innerText === '無期限') {
+                durationEl.innerText = dict[currentLang]['forever'];
+            }
+        }
+
+        // --- Core Functions ---
+        
+        function renderQR(containerId, data, size = 180, isNodeQR = false) {
+            const mainColor = currentTheme === 'dark' ? "#FFFFFF" : "#1e293b";
+            
+            let qrOptions = {
+                width: size,
+                height: size,
+                data: data,
+                backgroundOptions: { color: "transparent" }
+            };
+
+            if (isNodeQR) {
+                qrOptions.type = "canvas"; 
+                qrOptions.dotsOptions = { color: mainColor, type: "square" };
+                qrOptions.cornersSquareOptions = { color: mainColor, type: "square" };
+                qrOptions.cornersDotOptions = { color: mainColor, type: "square" };
+                qrOptions.qrOptions = { errorCorrectionLevel: "L" }; 
+            } else {
+                qrOptions.type = "svg";
+                qrOptions.dotsOptions = { color: mainColor, type: "rounded" };
+                qrOptions.cornersSquareOptions = { color: mainColor, type: "extra-rounded" };
+                qrOptions.cornersDotOptions = { color: mainColor, type: "dot" };
+                qrOptions.qrOptions = { errorCorrectionLevel: "Q" }; 
+            }
+
+            const qrCode = new QRCodeStyling(qrOptions);
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            qrCode.append(container);
+        }
+
+        function generateSubQR() {
+            renderQR("sub-qrcode", "{{ user.subscription_url }}", 180, false);
+        }
+
+        function toggleSection(contentId, caretId) {
+            document.getElementById(contentId).classList.toggle('open');
+            document.getElementById(caretId).classList.toggle('open');
+        }
+
+        function copyText(text, btnElement, isNode = false) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHtml = btnElement.innerHTML;
+                const copiedText = dict[currentLang]['copied'];
+                if(isNode) {
+                    btnElement.innerHTML = `<span style="color:#4ade80"><i class="fas fa-check"></i> ${copiedText}</span>`;
+                } else {
+                    btnElement.innerHTML = `<i class="fas fa-check"></i> <span>${copiedText}</span>`;
+                }
+                setTimeout(() => { btnElement.innerHTML = originalHtml; }, 2000);
+            });
+        }
+
+        function copyAllNodes(btnElement) {
+            const nodes = Array.from(document.querySelectorAll('.node-name')).map(el => el.getAttribute('data-url')).filter(url => url && url !== 'False');
+            if(nodes.length === 0) return;
+            navigator.clipboard.writeText(nodes.join('\n')).then(() => {
+                const originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = `<i class="fas fa-check"></i> <span>${dict[currentLang]['copied']}</span>`;
+                setTimeout(() => { btnElement.innerHTML = originalHtml; }, 2000);
+            });
+        }
+
+        function decodeVmessName(vmessLink) {
+            try { return JSON.parse(atob(vmessLink.replace('vmess://', ''))).ps || 'Unknown'; } catch (e) { return 'Unknown'; }
+        }
+        
+        function getProxyName(link) {
+            if (link === 'False') return null;
+            if (link.startsWith('vmess://')) return decodeVmessName(link);
+            const hashIndex = link.indexOf('#');
+            return hashIndex !== -1 ? decodeURIComponent(link.substring(hashIndex + 1)) : 'Unknown';
+        }
+        
+        function importShadowrocket() { window.location.href = 'sub://' + btoa("{{ user.subscription_url }}"); }
+        function importClash() { window.location.href = `clash://install-config?url=${encodeURIComponent("{{ user.subscription_url }}")}&name=${encodeURIComponent("{{ user.username }}")}`; }
+
+        const qrModal = document.getElementById('qrModal');
+        const nodeQrcodeDiv = document.getElementById('node-qrcode');
+
+        function showNodeQR(text) {
+            renderQR("node-qrcode", text, 220, true);
+            qrModal.classList.add('show');
+        }
+
+        function closeModal(event) { if (event === true || event.target === qrModal) { qrModal.classList.remove('show'); } }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setLangBtnActive(currentLang);
+            applyLang();
+            generateSubQR();
+            
+            document.querySelectorAll('.node-name').forEach(el => {
+                const url = el.getAttribute('data-url');
+                const name = getProxyName(url);
+                if(name) { el.innerText = name; el.title = name; } 
+                else { el.parentElement.style.display = 'none'; }
+            });
+            
+            if ("{{ user.status.value }}" !== "active") {
+                ['nodes-content', 'guide-content', 'nodes-caret', 'guide-caret'].forEach(id => document.getElementById(id).classList.remove('open'));
+            }
+        });
+    </script>
+</body>
+</html>
