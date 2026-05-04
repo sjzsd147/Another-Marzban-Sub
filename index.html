@@ -201,10 +201,20 @@
             border-radius: 20px;
             border: 1px solid var(--glass-border);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: background 0.3s, border-color 0.3s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        #sub-qrcode {
+            cursor: pointer;
+        }
+
+        #sub-qrcode:hover {
+            transform: scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         .info-grid {
@@ -557,7 +567,7 @@
         <div class="glass-card">
 
             <div class="direct-qr-container">
-                <div id="sub-qrcode"></div>
+                <div id="sub-qrcode" onclick="copyText('{{ user.subscription_url }}', document.querySelector('.main-actions .btn'))"></div>
             </div>
 
             <div class="info-grid">
