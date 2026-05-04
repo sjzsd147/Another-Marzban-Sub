@@ -559,6 +559,7 @@
                     <button class="lang-btn" data-lang="zh-tw">繁中</button>
                     <button class="lang-btn" data-lang="en">EN</button>
                     <button class="lang-btn" data-lang="ja">JP</button>
+                    <button class="lang-btn" data-lang="fa">FA</button>
                 </div>
             </div>
         </div>
@@ -824,10 +825,23 @@
                 step_2: "「インポート」ボタンを押すか、サブスクリンクをコピーして手動で追加します。",
                 step_3: "アプリ内でサブスクを更新し、最新のノードリストを取得します。",
                 step_4: "ノードを選択し、プロキシのスイッチをオンにして接続します。"
+            },
+            fa: {
+                status: "وضعیت", duration: "مدت زمان", traffic: "ترافیک", reset: "ریست ترافیک",
+                active: "فعال", limited: "محدود شده", expired: "منقضی شده", disabled: "غیرفعال",
+                reset_no_reset: "بدون ریست", reset_day: "روزانه", reset_week: "هفتگی", reset_month: "ماهانه", reset_year: "سالانه",
+                copy_sub: "کپی اشتراک", qr_node: "بارکد نود", qr_all_nodes: "بارکد همه نودها", guide: "راهنمای راه‌اندازی",
+                import_clash: "وارد کردن به Clash", import_v2rayng: "وارد کردن به v2rayNG", import_shadowrocket: "وارد کردن به Shadowrocket",
+                nodes: "لیست نودها", copy_all: "کپی همه نودها", copied: "کپی شد!", forever: "برای همیشه", non_cn_store: "(فروشگاه اپلیکیشن غیر چینی)",
+                usage_title: "راهنمای استفاده پایه",
+                step_1: "کلاینت پیشنهادی برای سیستم عامل خود را دانلود و نصب کنید.",
+                step_2: "روی دکمه وارد کردن کلیک کنید یا لینک اشتراک را کپی کرده و به صورت دستی اضافه کنید.",
+                step_3: "اشتراک را در کلاینت به‌روزرسانی کنید تا آخرین نودها را دریافت کنید.",
+                step_4: "یک نود را انتخاب کرده و کلید اصلی پروکسی را برای اتصال روشن کنید."
             }
         };
 
-        let currentLang = localStorage.getItem('sub_lang') || (navigator.language.toLowerCase().includes('zh-tw') || navigator.language.toLowerCase().includes('zh-hk') || navigator.language.toLowerCase().includes('zh-hant') ? 'zh-tw' : (navigator.language.includes('zh') ? 'zh' : (navigator.language.includes('ja') ? 'ja' : 'en')));
+        let currentLang = localStorage.getItem('sub_lang') || (navigator.language.toLowerCase().includes('zh-tw') || navigator.language.toLowerCase().includes('zh-hk') || navigator.language.toLowerCase().includes('zh-hant') ? 'zh-tw' : (navigator.language.includes('zh') ? 'zh' : (navigator.language.includes('ja') ? 'ja' : (navigator.language.includes('fa') ? 'fa' : 'en'))));
 
         function setLangBtnActive(lang) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
@@ -845,12 +859,13 @@
         });
 
         function applyLang() {
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (dict[currentLang] && dict[currentLang][key]) { el.innerHTML = dict[currentLang][key]; }
             });
             const durationEl = document.getElementById('duration-val');
-            if (durationEl.innerText.includes('∞') || durationEl.innerText === 'Forever' || durationEl.innerText === '永久有效' || durationEl.innerText === '無期限') {
+            if (durationEl.innerText.includes('∞') || durationEl.innerText === 'Forever' || durationEl.innerText === '永久有效' || durationEl.innerText === '無期限' || durationEl.innerText === 'برای همیشه') {
                 durationEl.innerText = dict[currentLang]['forever'];
             }
         }
