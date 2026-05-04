@@ -580,13 +580,13 @@
                 <div class="info-box">
                     <i class="fas fa-calendar-alt"></i>
                     <h4 data-i18n="duration">Duration</h4>
-                    <span id="duration-val">{% if user.expire %}{{ (user.expire | datetime).split()[0] }}{% else %}∞{%
+                    <span id="duration-val" dir="ltr">{% if user.expire %}{{ (user.expire | datetime).split()[0] }}{% else %}∞{%
                         endif %}</span>
                 </div>
                 <div class="info-box">
                     <i class="fas fa-chart-pie"></i>
                     <h4 data-i18n="traffic">Traffic</h4>
-                    <span>12.50 GB / 100.00 GB</span>
+                    <span dir="ltr">12.50 GB / 100.00 GB</span>
                 </div>
                 <div class="info-box">
                     <i class="fas fa-sync-alt"></i>
