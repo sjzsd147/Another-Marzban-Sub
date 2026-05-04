@@ -243,10 +243,10 @@
         <div class="glass-card">
             <div class="hidden-title" onclick="toggleSection('guide-content', 'guide-caret')">
                 <h3><i class="fas fa-book-open" style="margin-right: 0.5rem;"></i><span data-i18n="guide">Setup Guide</span></h3>
-                <i class="fas fa-chevron-down caret open" id="guide-caret"></i>
+                <i class="fas fa-chevron-down caret" id="guide-caret"></i>
             </div>
             
-            <div class="hidden-content open" id="guide-content">
+            <div class="hidden-content" id="guide-content">
                 <div class="guide-section">
                     <div class="os-card">
                         <div class="os-title"><i class="fab fa-windows text-blue-400"></i> Windows</div>
@@ -333,9 +333,14 @@
             </div>
             
             <div class="hidden-content" id="nodes-content">
-                <button class="btn btn-green" style="width: 100%; margin-top: 1rem;" onclick="copyAllNodes(this)">
-                    <i class="fas fa-copy"></i> <span data-i18n="copy_all">Copy All Nodes</span>
-                </button>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button class="btn btn-green" style="flex-grow: 1;" onclick="copyAllNodes(this)">
+                        <i class="fas fa-copy"></i> <span data-i18n="copy_all">Copy All Nodes</span>
+                    </button>
+                    <button class="btn" style="padding: 0 1.5rem; background: var(--box-bg); color: var(--text-main); border: 1px solid var(--glass-border);" onclick="showAllNodesQR()">
+                        <i class="fas fa-qrcode"></i>
+                    </button>
+                </div>
                 <div class="proxy-list" id="proxy-list-container">
                     {% for link in user.links %}
                     <div class="proxy-item">
@@ -383,53 +388,53 @@
                 status: "Status", duration: "Duration", traffic: "Traffic", reset: "Traffic Reset",
                 active: "Active", limited: "Limited", expired: "Expired", disabled: "Disabled",
                 reset_no_reset: "No Reset", reset_day: "Daily", reset_week: "Weekly", reset_month: "Monthly", reset_year: "Yearly",
-                copy_sub: "Copy Subscription", qr_node: "Node QR Code", guide: "Setup Guide",
+                copy_sub: "Copy Subscription", qr_node: "Node QR Code", qr_all_nodes: "All Nodes QR Code", guide: "Setup Guide",
                 import_clash: "Import to Clash", import_v2rayng: "Import to v2rayNG", import_shadowrocket: "Import to Shadowrocket",
                 nodes: "Nodes List", copy_all: "Copy All Nodes", copied: "Copied!", forever: "Forever", non_cn_store: "(Non-China App Store)",
                 usage_title: "Basic Usage Guide",
-                step_1: "1. Download and install the recommended client for your OS.",
-                step_2: "2. Click the Import button, or copy the subscription link to add it manually.",
-                step_3: "3. Update the subscription in the client to fetch the latest nodes.",
-                step_4: "4. Select a node and turn on the proxy switch to start using."
+                step_1: "Download and install the recommended client for your OS.",
+                step_2: "Click the Import button, or copy the subscription link to add it manually.",
+                step_3: "Update the subscription in the client to fetch the latest nodes.",
+                step_4: "Select a node and turn on the proxy switch to start using."
             },
             zh: {
                 status: "状态", duration: "有效期", traffic: "流量使用", reset: "流量重置",
                 active: "正常", limited: "流量耗尽", expired: "已过期", disabled: "已禁用",
                 reset_no_reset: "不重置", reset_day: "每日重置", reset_week: "每周重置", reset_month: "每月重置", reset_year: "每年重置",
-                copy_sub: "复制订阅链接", qr_node: "节点二维码", guide: "客户端指南",
+                copy_sub: "复制订阅链接", qr_node: "节点二维码", qr_all_nodes: "所有节点二维码", guide: "客户端指南",
                 import_clash: "一键导入 Clash", import_v2rayng: "一键导入 v2rayNG", import_shadowrocket: "一键导入 Shadowrocket",
                 nodes: "节点列表", copy_all: "一键复制所有节点", copied: "已复制！", forever: "永久有效", non_cn_store: "(非国区 App Store 下载)",
                 usage_title: "基本使用指南",
-                step_1: "1. 根据您的操作系统，下载并安装上方推荐的客户端软件。",
-                step_2: "2. 点击对应软件的“一键导入”按钮，或复制订阅链接并在软件中手动添加。",
-                step_3: "3. 在客户端中点击“更新订阅”，以获取最新的节点列表。",
-                step_4: "4. 选择一个延迟较低的节点，开启主开关即可开始使用。"
+                step_1: "根据您的操作系统，下载并安装上方推荐的客户端软件。",
+                step_2: "点击对应软件的“一键导入”按钮，或复制订阅链接并在软件中手动添加。",
+                step_3: "在客户端中点击“更新订阅”，以获取最新的节点列表。",
+                step_4: "选择一个延迟较低的节点，开启主开关即可开始使用。"
             },
             'zh-tw': {
                 status: "狀態", duration: "有效期", traffic: "流量使用", reset: "流量重置",
                 active: "正常", limited: "流量耗盡", expired: "已過期", disabled: "已禁用",
                 reset_no_reset: "不重置", reset_day: "每日重置", reset_week: "每週重置", reset_month: "每月重置", reset_year: "每年重置",
-                copy_sub: "複製訂閱連結", qr_node: "節點二維碼", guide: "用戶端指南",
+                copy_sub: "複製訂閱連結", qr_node: "節點二維碼", qr_all_nodes: "所有節點二維碼", guide: "用戶端指南",
                 import_clash: "一鍵匯入 Clash", import_v2rayng: "一鍵匯入 v2rayNG", import_shadowrocket: "一鍵匯入 Shadowrocket",
                 nodes: "節點列表", copy_all: "一鍵複製所有節點", copied: "已複製！", forever: "永久有效", non_cn_store: "(非中國區 App Store 下載)",
                 usage_title: "基本使用指南",
-                step_1: "1. 根據您的作業系統，下載並安裝上方推薦的用戶端軟體。",
-                step_2: "2. 點擊對應軟體的「一鍵匯入」按鈕，或複製訂閱連結並在軟體中手動加入。",
-                step_3: "3. 在用戶端中點擊「更新訂閱」，以取得最新的節點列表。",
-                step_4: "4. 選擇一個延遲較低的節點，開啟主開關即可開始使用。"
+                step_1: "根據您的作業系統，下載並安裝上方推薦的用戶端軟體。",
+                step_2: "點擊對應軟體的「一鍵匯入」按鈕，或複製訂閱連結並在軟體中手動加入。",
+                step_3: "在用戶端中點擊「更新訂閱」，以取得最新的節點列表。",
+                step_4: "選擇一個延遲較低的節點，開啟主開關即可開始使用。"
             },
             ja: {
                 status: "ステータス", duration: "有効期限", traffic: "通信量", reset: "リセット",
                 active: "有効", limited: "制限中", expired: "期限切れ", disabled: "無効",
                 reset_no_reset: "リセットなし", reset_day: "毎日", reset_week: "毎週", reset_month: "毎月", reset_year: "毎年",
-                copy_sub: "サブスクをコピー", qr_node: "ノードQRコード", guide: "セットアップガイド",
+                copy_sub: "サブスクをコピー", qr_node: "ノードQRコード", qr_all_nodes: "全ノードQRコード", guide: "セットアップガイド",
                 import_clash: "Clashにインポート", import_v2rayng: "v2rayNGにインポート", import_shadowrocket: "Shadowrocketにインポート",
                 nodes: "ノード一覧", copy_all: "全ノードをコピー", copied: "コピーしました！", forever: "無期限", non_cn_store: "(日本など海外のApp Store)",
                 usage_title: "基本の使いかた",
-                step_1: "1. OSに合わせて、上記の推奨アプリをダウンロード・インストールします。",
-                step_2: "2. 「インポート」ボタンを押すか、サブスクリンクをコピーして手動で追加します。",
-                step_3: "3. アプリ内でサブスクを更新し、最新のノードリストを取得します。",
-                step_4: "4. ノードを選択し、プロキシのスイッチをオンにして接続します。"
+                step_1: "OSに合わせて、上記の推奨アプリをダウンロード・インストールします。",
+                step_2: "「インポート」ボタンを押すか、サブスクリンクをコピーして手動で追加します。",
+                step_3: "アプリ内でサブスクを更新し、最新のノードリストを取得します。",
+                step_4: "ノードを選択し、プロキシのスイッチをオンにして接続します。"
             }
         };
 
@@ -544,6 +549,19 @@
 
         function showNodeQR(text) {
             renderQR("node-qrcode", text, 220, true);
+            document.querySelector('#qrModal h3').setAttribute('data-i18n', 'qr_node');
+            document.querySelector('#qrModal h3').innerHTML = dict[currentLang]['qr_node'];
+            qrModal.classList.add('show');
+        }
+
+        function showAllNodesQR() {
+            const nodes = Array.from(document.querySelectorAll('.node-name')).map(el => el.getAttribute('data-url')).filter(url => url && url !== 'False');
+            if(nodes.length === 0) return;
+            let text = nodes.join('\n');
+            try { text = btoa(text); } catch (e) { text = btoa(unescape(encodeURIComponent(text))); }
+            renderQR("node-qrcode", text, 220, true);
+            document.querySelector('#qrModal h3').setAttribute('data-i18n', 'qr_all_nodes');
+            document.querySelector('#qrModal h3').innerHTML = dict[currentLang]['qr_all_nodes'];
             qrModal.classList.add('show');
         }
 
