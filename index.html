@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        ::-webkit-scrollbar { display: none; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
         /* CSS Variables for Themes */
         :root {
             --primary: #6366f1;
             --gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
             --gradient2: linear-gradient(135deg, #2d7038, #4fac57);
-            
+
             /* Dark Theme (Default) */
             --bg-main: linear-gradient(45deg, #0f172a, #1e293b);
             --text-main: #ffffff;
@@ -25,12 +35,12 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --box-bg: rgba(255, 255, 255, 0.05);
             --box-hover: rgba(255, 255, 255, 0.1);
-            
+
             --lang-bg: rgba(255, 255, 255, 0.05);
             --lang-text: #cbd5e1;
             --lang-border: rgba(255, 255, 255, 0.1);
             --lang-active: #3b82f6;
-            
+
             --qr-bg: rgba(255, 255, 255, 0.05);
             --guide-bg: rgba(0, 0, 0, 0.2);
             --modal-bg: rgba(15, 23, 42, 0.95);
@@ -45,12 +55,12 @@
             --glass-border: rgba(255, 255, 255, 0.5);
             --box-bg: rgba(255, 255, 255, 0.5);
             --box-hover: rgba(255, 255, 255, 0.8);
-            
+
             --lang-bg: rgba(255, 255, 255, 0.6);
             --lang-text: #475569;
             --lang-border: rgba(0, 0, 0, 0.1);
             --lang-active: #3b82f6;
-            
+
             --qr-bg: rgba(0, 0, 0, 0.03);
             --guide-bg: rgba(255, 255, 255, 0.5);
             --modal-bg: rgba(255, 255, 255, 0.8);
@@ -64,16 +74,56 @@
             overflow-x: hidden;
             transition: color 0.3s;
         }
-        
-        .background { position: fixed; width: 100vw; height: 100vh; z-index: -1; }
-        .circle { position: absolute; border-radius: 50%; filter: blur(70px); }
-        .circle-1 { width: 500px; height: 500px; background: #6366f140; top: -100px; left: -100px; }
-        .circle-2 { width: 400px; height: 400px; background: #8b5cf640; bottom: -50px; right: -50px; }
-        
-        .container { max-width: 800px; margin: 2rem auto; padding: 1.5rem; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-        
-        .header-actions { display: flex; gap: 1rem; align-items: center; }
+
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+        }
+
+        .circle-1 {
+            width: 500px;
+            height: 500px;
+            background: #6366f140;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle-2 {
+            width: 400px;
+            height: 400px;
+            background: #8b5cf640;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
 
         .lang-toggle {
             display: inline-flex;
@@ -84,6 +134,7 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s;
         }
+
         .lang-btn {
             background: transparent;
             color: var(--lang-text);
@@ -95,8 +146,15 @@
             transition: all 0.2s;
             outline: none;
         }
-        .lang-btn.active { background: var(--lang-active); color: #fff; }
-        .lang-btn:not(:last-child) { border-right: 1px solid var(--lang-border); }
+
+        .lang-btn.active {
+            background: var(--lang-active);
+            color: #fff;
+        }
+
+        .lang-btn:not(:last-child) {
+            border-right: 1px solid var(--lang-border);
+        }
 
         .theme-toggle {
             background: var(--lang-bg);
@@ -105,89 +163,383 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s; backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
-        .theme-toggle:hover { transform: scale(1.05); background: var(--box-hover); color: var(--text-main); }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            background: var(--box-hover);
+            color: var(--text-main);
+        }
 
         .glass-card {
-            background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
-            border-radius: 24px; padding: 1.5rem; margin-bottom: 1.5rem; animation: fadeUp 0.5s ease-out;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.5s ease-out;
             transition: all 0.3s;
         }
-        
-        .direct-qr-container { display: flex; justify-content: center; margin-bottom: 1.5rem; }
-        
-        #sub-qrcode, #node-qrcode {
-            background: var(--qr-bg); 
-            padding: 1.5rem; 
-            border-radius: 20px;
-            border: 1px solid var(--glass-border); 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: background 0.3s, border-color 0.3s;
-            display: flex; align-items: center; justify-content: center;
+
+        .direct-qr-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
         }
 
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-        .info-box { background: var(--box-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.25rem 1rem; text-align: center; transition: all 0.3s; }
-        .info-box i { font-size: 1.5rem; margin-bottom: 0.5rem; color: #a5b4fc; }
-        .info-box h4 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 400; transition: color 0.3s; }
-        .info-box span { font-size: 1.1rem; font-weight: 600; color: var(--text-main); transition: color 0.3s; }
+        #sub-qrcode,
+        #node-qrcode {
+            background: var(--qr-bg);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s, border-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        .main-actions { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 0.5rem; }
-        .btn { background: var(--gradient); border: none; color: white; padding: 1rem; border-radius: 16px; cursor: pointer; font-size: 1rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: transform 0.2s; }
-        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn-green { background: var(--gradient2); }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
 
-        .guide-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .os-card { background: var(--box-bg); border-radius: 16px; padding: 1.25rem; transition: background 0.3s; }
-        .os-title { display: flex; align-items: center; gap: 0.75rem; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
-        .os-title i { font-size: 1.25rem; }
-        .app-list { display: flex; flex-direction: column; gap: 0.75rem; }
-        .app-btn { background: var(--box-bg); border: 1px solid var(--glass-border); color: var(--text-main); padding: 0.75rem; border-radius: 12px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; transition: all 0.2s; }
-        .app-btn:hover { background: var(--box-hover); }
-        .app-btn.import { background: var(--gradient); color: white; border: none; font-weight: 500; justify-content: center; gap: 0.5rem; }
-        .app-note { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.25rem; transition: color 0.3s; }
+        .info-box {
+            background: var(--box-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.25rem 1rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
 
-        .usage-guide { margin-top: 1.5rem; padding: 1.25rem; background: var(--guide-bg); border-radius: 16px; border: 1px solid var(--glass-border); transition: all 0.3s; }
-        .usage-guide h4 { margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: var(--text-main); }
-        .usage-guide ol { padding-left: 1.5rem; color: var(--text-muted); font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem; transition: color 0.3s; }
-        .usage-guide li::marker { color: #8b5cf6; font-weight: bold; }
+        .info-box i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #a5b4fc;
+        }
 
-        .proxy-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
-        .proxy-item { display: flex; justify-content: space-between; align-items: center; background: var(--box-bg); padding: 0.75rem 1rem; border-radius: 12px; transition: all 0.2s; border: 1px solid transparent; }
-        .proxy-item:hover { background: var(--box-hover); border-color: var(--glass-border); }
-        .node-name { font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 75%; cursor: pointer; flex-grow: 1; }
-        .node-actions { display: flex; gap: 1rem; color: var(--text-muted); align-items: center; transition: color 0.3s; }
-        .node-actions i { cursor: pointer; transition: 0.2s; font-size: 1.1rem; }
-        .node-actions i:hover { color: var(--text-main); }
+        .info-box h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
 
-        .modal { display: none; position: fixed; inset: 0; background: var(--modal-bg); z-index: 9999; backdrop-filter: blur(12px); align-items: center; justify-content: center; transition: background 0.3s; }
-        .modal.show { display: flex; animation: modalFadeIn 0.3s ease-out; }
-        .modal-content { background: var(--modal-content); padding: 2.5rem 2rem; border-radius: 24px; border: 1px solid var(--glass-border); text-align: center; max-width: 90%; position: relative; transition: all 0.3s; }
-        .close-modal { position: absolute; top: 15px; right: 15px; background: var(--glass-border); color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-        .close-modal:hover { background: rgba(239, 68, 68, 0.8); color: white; }
+        .info-box span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: color 0.3s;
+        }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        
-        .hidden-title { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .hidden-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
-        .hidden-content.open { max-height: 3000px; }
-        .caret { transition: transform 0.3s; }
-        .caret.open { transform: rotate(180deg); }
+        .main-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            background: var(--gradient);
+            border: none;
+            color: white;
+            padding: 1rem;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn-green {
+            background: var(--gradient2);
+        }
+
+        .guide-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .os-card {
+            background: var(--box-bg);
+            border-radius: 16px;
+            padding: 1.25rem;
+            transition: background 0.3s;
+        }
+
+        .os-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .os-title i {
+            font-size: 1.25rem;
+        }
+
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .app-btn {
+            background: var(--box-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 0.75rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .app-btn:hover {
+            background: var(--box-hover);
+        }
+
+        .app-btn.import {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            font-weight: 500;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .app-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.25rem;
+            transition: color 0.3s;
+        }
+
+        .usage-guide {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--guide-bg);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+        }
+
+        .usage-guide h4 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .usage-guide ol {
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .usage-guide li::marker {
+            color: #8b5cf6;
+            font-weight: bold;
+        }
+
+        .proxy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .proxy-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--box-bg);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .proxy-item:hover {
+            background: var(--box-hover);
+            border-color: var(--glass-border);
+        }
+
+        .node-name {
+            font-size: 0.85rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 75%;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+
+        .node-actions {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-muted);
+            align-items: center;
+            transition: color 0.3s;
+        }
+
+        .node-actions i {
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .node-actions i:hover {
+            color: var(--text-main);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--modal-bg);
+            z-index: 9999;
+            backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: var(--modal-content);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            max-width: 90%;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--glass-border);
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            background: rgba(239, 68, 68, 0.8);
+            color: white;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hidden-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .hidden-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        .hidden-content.open {
+            max-height: 3000px;
+        }
+
+        .caret {
+            transition: transform 0.3s;
+        }
+
+        .caret.open {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
+
 <body>
     <div class="background">
-        <div class="circle circle-1"></div><div class="circle circle-2"></div>
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
     </div>
 
     <div class="container">
         <!-- Header & Controls -->
         <div class="header-top">
             <h2 style="font-weight: 600; font-size: 1.4rem;">{{ user.username }}</h2>
-            
+
             <div class="header-actions">
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle Theme">
                     <i class="fas fa-moon"></i>
@@ -203,7 +555,7 @@
 
         <!-- Dashboard Card -->
         <div class="glass-card">
-            
+
             <div class="direct-qr-container">
                 <div id="sub-qrcode"></div>
             </div>
@@ -217,17 +569,20 @@
                 <div class="info-box">
                     <i class="fas fa-calendar-alt"></i>
                     <h4 data-i18n="duration">Duration</h4>
-                    <span id="duration-val">{% if user.expire %}{{ (user.expire | datetime).split()[0] }}{% else %}∞{% endif %}</span>
+                    <span id="duration-val">{% if user.expire %}{{ (user.expire | datetime).split()[0] }}{% else %}∞{%
+                        endif %}</span>
                 </div>
                 <div class="info-box">
                     <i class="fas fa-chart-pie"></i>
                     <h4 data-i18n="traffic">Traffic</h4>
-                    <span>{{ user.used_traffic | bytesformat }} / {% if user.data_limit %}{{ user.data_limit | bytesformat }}{% else %}∞{% endif %}</span>
+                    <span>{{ user.used_traffic | bytesformat }} / {% if user.data_limit %}{{ user.data_limit |
+                        bytesformat }}{% else %}∞{% endif %}</span>
                 </div>
                 <div class="info-box">
                     <i class="fas fa-sync-alt"></i>
                     <h4 data-i18n="reset">Traffic Reset</h4>
-                    {% set reset_val = user.data_limit_reset_strategy.value if user.data_limit_reset_strategy.value else user.data_limit_reset_strategy %}
+                    {% set reset_val = user.data_limit_reset_strategy.value if user.data_limit_reset_strategy.value else
+                    user.data_limit_reset_strategy %}
                     <span data-i18n="reset_{{ reset_val }}">{{ reset_val }}</span>
                 </div>
             </div>
@@ -242,10 +597,11 @@
         <!-- Guide Card -->
         <div class="glass-card">
             <div class="hidden-title" onclick="toggleSection('guide-content', 'guide-caret')">
-                <h3><i class="fas fa-book-open" style="margin-right: 0.5rem;"></i><span data-i18n="guide">Setup Guide</span></h3>
+                <h3><i class="fas fa-book-open" style="margin-right: 0.5rem;"></i><span data-i18n="guide">Setup
+                        Guide</span></h3>
                 <i class="fas fa-chevron-down caret" id="guide-caret"></i>
             </div>
-            
+
             <div class="hidden-content" id="guide-content">
                 <div class="guide-section">
                     <div class="os-card">
@@ -254,8 +610,10 @@
                             <a href="https://github.com/2dust/v2rayN/releases" class="app-btn" target="_blank">
                                 <span>v2rayN</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
                             </a>
-                            <a href="https://github.com/clash-verge-rev/clash-verge-rev/releases" class="app-btn" target="_blank">
-                                <span>Clash Verge</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            <a href="https://github.com/clash-verge-rev/clash-verge-rev/releases" class="app-btn"
+                                target="_blank">
+                                <span>Clash Verge</span> <i class="fas fa-external-link-alt"
+                                    style="font-size: 0.8em;"></i>
                             </a>
                             <button class="app-btn import" onclick="importClash()">
                                 <i class="fas fa-bolt"></i> <span data-i18n="import_clash">Import to Clash</span>
@@ -269,8 +627,10 @@
                             <a href="https://github.com/yichengchen/clashX/releases" class="app-btn" target="_blank">
                                 <span>ClashX</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
                             </a>
-                            <a href="https://github.com/clash-verge-rev/clash-verge-rev/releases" class="app-btn" target="_blank">
-                                <span>Clash Verge</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            <a href="https://github.com/clash-verge-rev/clash-verge-rev/releases" class="app-btn"
+                                target="_blank">
+                                <span>Clash Verge</span> <i class="fas fa-external-link-alt"
+                                    style="font-size: 0.8em;"></i>
                             </a>
                             <button class="app-btn import" onclick="importClash()">
                                 <i class="fas fa-bolt"></i> <span data-i18n="import_clash">Import to Clash</span>
@@ -284,10 +644,13 @@
                             <a href="https://github.com/2dust/v2rayNG/releases" class="app-btn" target="_blank">
                                 <span>v2rayNG</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
                             </a>
-                            <a href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases" class="app-btn" target="_blank">
-                                <span>Clash Meta</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            <a href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases" class="app-btn"
+                                target="_blank">
+                                <span>Clash Meta</span> <i class="fas fa-external-link-alt"
+                                    style="font-size: 0.8em;"></i>
                             </a>
-                            <a href="v2rayng://install-config?url={{ user.subscription_url }}#{{ user.username }}" class="app-btn import">
+                            <a href="v2rayng://install-config?url={{ user.subscription_url }}#{{ user.username }}"
+                                class="app-btn import">
                                 <i class="fas fa-bolt"></i> <span data-i18n="import_v2rayng">Import to v2rayNG</span>
                             </a>
                             <button class="app-btn import" onclick="importClash()">
@@ -299,15 +662,22 @@
                     <div class="os-card">
                         <div class="os-title"><i class="fab fa-app-store-ios"></i> iOS</div>
                         <div class="app-list">
-                            <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" class="app-btn" target="_blank">
-                                <span><i class="fas fa-search" style="font-size: 0.8em; margin-right: 4px;"></i> Shadowrocket</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            <a href="https://apps.apple.com/us/app/shadowrocket/id932747118" class="app-btn"
+                                target="_blank">
+                                <span><i class="fas fa-search" style="font-size: 0.8em; margin-right: 4px;"></i>
+                                    Shadowrocket</span> <i class="fas fa-external-link-alt"
+                                    style="font-size: 0.8em;"></i>
                             </a>
-                            <a href="https://apps.apple.com/us/app/quantumult-x/id1443988620" class="app-btn" target="_blank">
-                                <span><i class="fas fa-search" style="font-size: 0.8em; margin-right: 4px;"></i> Quantumult X</span> <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                            <a href="https://apps.apple.com/us/app/quantumult-x/id1443988620" class="app-btn"
+                                target="_blank">
+                                <span><i class="fas fa-search" style="font-size: 0.8em; margin-right: 4px;"></i>
+                                    Quantumult X</span> <i class="fas fa-external-link-alt"
+                                    style="font-size: 0.8em;"></i>
                             </a>
                             <div class="app-note" data-i18n="non_cn_store">(非国区 App Store 下载)</div>
                             <button class="app-btn import" onclick="importShadowrocket()" style="margin-top: 0.5rem;">
-                                <i class="fas fa-bolt"></i> <span data-i18n="import_shadowrocket">Import to Shadowrocket</span>
+                                <i class="fas fa-bolt"></i> <span data-i18n="import_shadowrocket">Import to
+                                    Shadowrocket</span>
                             </button>
                         </div>
                     </div>
@@ -316,10 +686,13 @@
                 <div class="usage-guide">
                     <h4><i class="fas fa-info-circle"></i> <span data-i18n="usage_title">Basic Usage Guide</span></h4>
                     <ol>
-                        <li data-i18n="step_1">Download and install the recommended client for your operating system.</li>
-                        <li data-i18n="step_2">Click the "Import" button above, or copy your subscription link and add it manually in the client.</li>
+                        <li data-i18n="step_1">Download and install the recommended client for your operating system.
+                        </li>
+                        <li data-i18n="step_2">Click the "Import" button above, or copy your subscription link and add
+                            it manually in the client.</li>
                         <li data-i18n="step_3">Update the subscription within the client to fetch the latest nodes.</li>
-                        <li data-i18n="step_4">Select a node from the list and turn on the main proxy switch to connect.</li>
+                        <li data-i18n="step_4">Select a node from the list and turn on the main proxy switch to connect.
+                        </li>
                     </ol>
                 </div>
             </div>
@@ -328,26 +701,32 @@
         <!-- Nodes Card -->
         <div class="glass-card">
             <div class="hidden-title" onclick="toggleSection('nodes-content', 'nodes-caret')">
-                <h3><i class="fas fa-server" style="margin-right: 0.5rem;"></i><span data-i18n="nodes">Nodes List</span></h3>
+                <h3><i class="fas fa-server" style="margin-right: 0.5rem;"></i><span data-i18n="nodes">Nodes List</span>
+                </h3>
                 <i class="fas fa-chevron-down caret" id="nodes-caret"></i>
             </div>
-            
+
             <div class="hidden-content" id="nodes-content">
                 <div style="display: flex; gap: 1rem; margin-top: 1rem;">
                     <button class="btn btn-green" style="flex-grow: 1;" onclick="copyAllNodes(this)">
                         <i class="fas fa-copy"></i> <span data-i18n="copy_all">Copy All Nodes</span>
                     </button>
-                    <button class="btn" style="padding: 0 1.5rem; background: var(--box-bg); color: var(--text-main); border: 1px solid var(--glass-border);" onclick="showAllNodesQR()">
+                    <button class="btn"
+                        style="padding: 0 1.5rem; background: var(--box-bg); color: var(--text-main); border: 1px solid var(--glass-border);"
+                        onclick="showAllNodesQR()">
                         <i class="fas fa-qrcode"></i>
                     </button>
                 </div>
                 <div class="proxy-list" id="proxy-list-container">
                     {% for link in user.links %}
                     <div class="proxy-item">
-                        <span class="node-name" data-url="{{ link }}" onclick="copyText('{{ link }}', this, true)">Loading...</span>
+                        <span class="node-name" data-url="{{ link }}"
+                            onclick="copyText('{{ link }}', this, true)">Loading...</span>
                         <div class="node-actions">
                             <i class="fas fa-qrcode" onclick="showNodeQR('{{ link }}')" title="QR Code"></i>
-                            <i class="fas fa-clone" onclick="copyText('{{ link }}', this.parentElement.previousElementSibling, true)" title="Copy"></i>
+                            <i class="fas fa-clone"
+                                onclick="copyText('{{ link }}', this.parentElement.previousElementSibling, true)"
+                                title="Copy"></i>
                         </div>
                     </div>
                     {% endfor %}
@@ -461,16 +840,16 @@
                 if (dict[currentLang] && dict[currentLang][key]) { el.innerHTML = dict[currentLang][key]; }
             });
             const durationEl = document.getElementById('duration-val');
-            if(durationEl.innerText.includes('∞') || durationEl.innerText === 'Forever' || durationEl.innerText === '無期限') {
+            if (durationEl.innerText.includes('∞') || durationEl.innerText === 'Forever' || durationEl.innerText === '無期限') {
                 durationEl.innerText = dict[currentLang]['forever'];
             }
         }
 
         // --- Core Functions ---
-        
+
         function renderQR(containerId, data, size = 180, isNodeQR = false) {
             const mainColor = currentTheme === 'dark' ? "#FFFFFF" : "#1e293b";
-            
+
             let qrOptions = {
                 width: size,
                 height: size,
@@ -479,17 +858,17 @@
             };
 
             if (isNodeQR) {
-                qrOptions.type = "canvas"; 
+                qrOptions.type = "canvas";
                 qrOptions.dotsOptions = { color: mainColor, type: "square" };
                 qrOptions.cornersSquareOptions = { color: mainColor, type: "square" };
                 qrOptions.cornersDotOptions = { color: mainColor, type: "square" };
-                qrOptions.qrOptions = { errorCorrectionLevel: "L" }; 
+                qrOptions.qrOptions = { errorCorrectionLevel: "L" };
             } else {
                 qrOptions.type = "svg";
                 qrOptions.dotsOptions = { color: mainColor, type: "rounded" };
                 qrOptions.cornersSquareOptions = { color: mainColor, type: "extra-rounded" };
                 qrOptions.cornersDotOptions = { color: mainColor, type: "dot" };
-                qrOptions.qrOptions = { errorCorrectionLevel: "Q" }; 
+                qrOptions.qrOptions = { errorCorrectionLevel: "Q" };
             }
 
             const qrCode = new QRCodeStyling(qrOptions);
@@ -511,7 +890,7 @@
             navigator.clipboard.writeText(text).then(() => {
                 const originalHtml = btnElement.innerHTML;
                 const copiedText = dict[currentLang]['copied'];
-                if(isNode) {
+                if (isNode) {
                     btnElement.innerHTML = `<span style="color:#4ade80"><i class="fas fa-check"></i> ${copiedText}</span>`;
                 } else {
                     btnElement.innerHTML = `<i class="fas fa-check"></i> <span>${copiedText}</span>`;
@@ -522,7 +901,7 @@
 
         function copyAllNodes(btnElement) {
             const nodes = Array.from(document.querySelectorAll('.node-name')).map(el => el.getAttribute('data-url')).filter(url => url && url !== 'False');
-            if(nodes.length === 0) return;
+            if (nodes.length === 0) return;
             navigator.clipboard.writeText(nodes.join('\n')).then(() => {
                 const originalHtml = btnElement.innerHTML;
                 btnElement.innerHTML = `<i class="fas fa-check"></i> <span>${dict[currentLang]['copied']}</span>`;
@@ -533,14 +912,14 @@
         function decodeVmessName(vmessLink) {
             try { return JSON.parse(atob(vmessLink.replace('vmess://', ''))).ps || 'Unknown'; } catch (e) { return 'Unknown'; }
         }
-        
+
         function getProxyName(link) {
             if (link === 'False') return null;
             if (link.startsWith('vmess://')) return decodeVmessName(link);
             const hashIndex = link.indexOf('#');
             return hashIndex !== -1 ? decodeURIComponent(link.substring(hashIndex + 1)) : 'Unknown';
         }
-        
+
         function importShadowrocket() { window.location.href = 'sub://' + btoa("{{ user.subscription_url }}"); }
         function importClash() { window.location.href = `clash://install-config?url=${encodeURIComponent("{{ user.subscription_url }}")}&name=${encodeURIComponent("{{ user.username }}")}`; }
 
@@ -556,10 +935,9 @@
 
         function showAllNodesQR() {
             const nodes = Array.from(document.querySelectorAll('.node-name')).map(el => el.getAttribute('data-url')).filter(url => url && url !== 'False');
-            if(nodes.length === 0) return;
+            if (nodes.length === 0) return;
             let text = nodes.join('\n');
-            try { text = btoa(text); } catch (e) { text = btoa(unescape(encodeURIComponent(text))); }
-            renderQR("node-qrcode", text, 220, true);
+            renderQR("node-qrcode", text, 280, true);
             document.querySelector('#qrModal h3').setAttribute('data-i18n', 'qr_all_nodes');
             document.querySelector('#qrModal h3').innerHTML = dict[currentLang]['qr_all_nodes'];
             qrModal.classList.add('show');
@@ -571,18 +949,19 @@
             setLangBtnActive(currentLang);
             applyLang();
             generateSubQR();
-            
+
             document.querySelectorAll('.node-name').forEach(el => {
                 const url = el.getAttribute('data-url');
                 const name = getProxyName(url);
-                if(name) { el.innerText = name; el.title = name; } 
+                if (name) { el.innerText = name; el.title = name; }
                 else { el.parentElement.style.display = 'none'; }
             });
-            
+
             if ("{{ user.status.value }}" !== "active") {
                 ['nodes-content', 'guide-content', 'nodes-caret', 'guide-caret'].forEach(id => document.getElementById(id).classList.remove('open'));
             }
         });
     </script>
 </body>
+
 </html>
