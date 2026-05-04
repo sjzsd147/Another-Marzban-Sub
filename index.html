@@ -193,7 +193,8 @@
                     <i class="fas fa-moon"></i>
                 </button>
                 <div class="lang-toggle">
-                    <button class="lang-btn" data-lang="zh">中文</button>
+                    <button class="lang-btn" data-lang="zh">简中</button>
+                    <button class="lang-btn" data-lang="zh-tw">繁中</button>
                     <button class="lang-btn" data-lang="en">EN</button>
                     <button class="lang-btn" data-lang="ja">JP</button>
                 </div>
@@ -404,6 +405,19 @@
                 step_3: "3. 在客户端中点击“更新订阅”，以获取最新的节点列表。",
                 step_4: "4. 选择一个延迟较低的节点，开启主开关即可开始使用。"
             },
+            'zh-tw': {
+                status: "狀態", duration: "有效期", traffic: "流量使用", reset: "流量重置",
+                active: "正常", limited: "流量耗盡", expired: "已過期", disabled: "已禁用",
+                reset_no_reset: "不重置", reset_day: "每日重置", reset_week: "每週重置", reset_month: "每月重置", reset_year: "每年重置",
+                copy_sub: "複製訂閱連結", qr_node: "節點二維碼", guide: "用戶端指南",
+                import_clash: "一鍵匯入 Clash", import_v2rayng: "一鍵匯入 v2rayNG", import_shadowrocket: "一鍵匯入 Shadowrocket",
+                nodes: "節點列表", copy_all: "一鍵複製所有節點", copied: "已複製！", forever: "永久有效", non_cn_store: "(非中國區 App Store 下載)",
+                usage_title: "基本使用指南",
+                step_1: "1. 根據您的作業系統，下載並安裝上方推薦的用戶端軟體。",
+                step_2: "2. 點擊對應軟體的「一鍵匯入」按鈕，或複製訂閱連結並在軟體中手動加入。",
+                step_3: "3. 在用戶端中點擊「更新訂閱」，以取得最新的節點列表。",
+                step_4: "4. 選擇一個延遲較低的節點，開啟主開關即可開始使用。"
+            },
             ja: {
                 status: "ステータス", duration: "有効期限", traffic: "通信量", reset: "リセット",
                 active: "有効", limited: "制限中", expired: "期限切れ", disabled: "無効",
@@ -419,7 +433,7 @@
             }
         };
 
-        let currentLang = localStorage.getItem('sub_lang') || (navigator.language.includes('zh') ? 'zh' : (navigator.language.includes('ja') ? 'ja' : 'en'));
+        let currentLang = localStorage.getItem('sub_lang') || (navigator.language.toLowerCase().includes('zh-tw') || navigator.language.toLowerCase().includes('zh-hk') || navigator.language.toLowerCase().includes('zh-hant') ? 'zh-tw' : (navigator.language.includes('zh') ? 'zh' : (navigator.language.includes('ja') ? 'ja' : 'en')));
 
         function setLangBtnActive(lang) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
